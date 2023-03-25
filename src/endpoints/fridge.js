@@ -2,7 +2,20 @@ const data = require('../data.js')
 
 // POST /fridge/
 exports.createFridgeHandle = (req, res) => {
-    // TODO: create fridge
+    data.createFridge().then((fridge) => {
+        res.status(200).json(fridge)
+    }).catch((err) => {
+        // alias the error for a duplicate database entry
+        if (err.reason == "Document update conflict.") {
+            err.statusCode = 400
+            err.reason = "Fridge already exists."
+        }
+
+        // send the error
+        res.status(err.statusCode).json({
+            message: err.reason
+        })
+    });
 }
 
 // GET /fridge/:fridge_id/items/
@@ -30,8 +43,8 @@ exports.getFridgeItemsHandle = (req, res) => {
 }
 
 // PUT /fridge/:fridge_id/items/
-exports.addFridgeItemsHandle = (req, res) => {
-    // TODO: add fridge items
+exports.updateFridgeItemsHandle = (req, res) => {
+    
 }
 
 // DELETE /fridge/:fridge_id/items/
