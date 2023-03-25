@@ -21,13 +21,10 @@ exports.createFridgeHandle = (req, res) => {
 // GET /fridge/:fridge_id/items/
 exports.getFridgeItemsHandle = (req, res) => {
     data.getFridgeById(req.params.fridge_id).then((fridge) => {
-        let items = [];
-
-        // convert items to an array
-        fridge.items.forEach((item) => items.push)
-
         // send back the items
-        res.status(200).json(items)
+        res.status(200).json(
+            data.getFridgeItemArray(fridge)
+        )
     }).catch((err) => {
         // alias the error for a missing database entry
         if (err.reason == "missing") {

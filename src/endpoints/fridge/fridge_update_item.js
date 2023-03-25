@@ -7,7 +7,7 @@ exports.handler = (req, res) => {
     if (!Array.isArray(req.body)) {
         res.status(400).json({
             message: 'Invalid request was made- No Array.'
-        });
+        })
 
         return
     }
@@ -19,6 +19,52 @@ exports.handler = (req, res) => {
         return
     }
 
-    // 
+    // get the fridge from the database
+    data.getFridgeById(req.params._id).then((fridge) => {
+        // update the items
+        fridge.items = req.body;
 
+        // save the fridge
+        return data.updateFridge(fridge);
+    }).then((fridge) => {
+        // iterate all items in the request body
+        req.body.items.forEach((item) => {
+            // if the item doesn't exist, create it
+            if (!fridge.items.hasOwnProperty(item._id)) {
+                fridge.items[item._id] = {
+                    name: item.name,
+                    expiry: item.expiry,
+                    quantity: item.quantity
+                }
+            }
+            
+            // patch the items
+            patchIfExists(item, fridge.items[item._id], "name");
+            patchIfExists(item, fridge.items[item._id], "expiry");
+            patchIfExists(item, fridge.items[item._id], "quantity");
+        })
+
+        return data.updateFridge(fridge);
+    }).then((fridge) => {
+        // status 200
+        res.status(200).json(
+            data.getFridgeItemArray(fridge)
+        )
+    }).catch((err) => {
+        // alias the error for a missing database entry
+        if (err.reason == "missing") {
+            err.statusCode = 400
+            err.reason = "Fridge not found."
+        }
+
+        // send the error
+        res.status(err.statusCode).json({
+            message: err.reason
+        })
+    })
+}
+
+function patchIfExists(sourceObj, targetObj, key) {
+    if (sourceObj.hasOwnProperty(key))
+        targetObj[key] = sourceObj[key];
 }

@@ -76,6 +76,24 @@ exports.getFridgeById = (id) => {
     })
 }
 
-exports.updateFridgeItem = (fridge, item) => {
-    // TODO: mutate the fridge
+exports.updateFridgeItem = (fridge) => {
+    // upload the new fridge
+    return new Promise((resolve, reject) => {
+        fridges.insert(fridge, (err, body) => {
+            if (err) reject(err)
+            else {
+                fridge._rev = body.rev
+                resolve(fridge)
+            }
+        })
+    })
+}
+
+exports.getFridgeItemArray = (fridge) => {
+    let items = []
+
+    for (let item in fridge.items)
+        items.push(fridge.items[item])
+
+    return items
 }
