@@ -47,3 +47,34 @@ exports.startSession = (user) => {
         })
     })
 }
+
+exports.createFridge = () => {
+    // create a fridge object
+    let fridge = {
+        _id: uuidv4(),
+        items: []
+    }
+
+    return new Promise((resolve, reject) => {
+        fridges.insert(fridge, (err, body) => {
+            if (err) reject(err)
+            else {
+                fridge._rev = body.rev
+                resolve(fridge)
+            }
+        })
+    })
+}
+
+exports.getFridgeById = (id) => {
+    return new Promise((resolve, reject) => {
+        fridges.get(id, { revs_info: true }, (err, body) => {
+            if (err) reject(err)
+            else resolve(body)
+        })
+    })
+}
+
+exports.updateFridgeItem = (fridge, item) => {
+    // TODO: mutate the fridge
+}

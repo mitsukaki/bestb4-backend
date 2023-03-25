@@ -1,15 +1,34 @@
+// dependencies
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const app = express()
-const port = 80
 
+// util
 const data = require('./data.js')
+const app = express()
 
+// endpoints
 const auth = require('./endpoints/auth.js')
 const user = require('./endpoints/user.js')
 const user_create = require('./endpoints/user/user_create.js')
 const fridge = require('./endpoints/fridge.js')
+
+// Load SSL data if not devmode
+let credentials;
+if (!argv.devmode) {
+    const privateKey = fs.readFileSync('/etc/letsencrypt/live/bb4.mitsukaki.com/privkey.pem', 'utf8');
+    const certificate = fs.readFileSync('/etc/letsencrypt/live/bb4.mitsukaki.com/cert.pem', 'utf8');
+    const ca = fs.readFileSync('/etc/letsencrypt/live/bb4.mitsukaki.com/chain.pem', 'utf8');
+
+    credentials = {
+        key: privateKey,
+        cert: certificate,
+        ca: ca
+    };
+}
 
 // parse the request body with JSON
 app.use(bodyParser.json())
@@ -42,3 +61,13 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`BestBefore backend alive on port ${port}`)
 })
+
+let server;
+if (argv.devmode) server = http.createServer(app); 
+else server = https.createServer(credentials, app);
+
+let port = argv.devmode ? 80 : 443;
+httpsServer.listen(port, () => {
+    if (argv.devmode) console.log('[WARN] Running in devmode!');
+    console.log('BestBefore Server running on port' + port);
+});
