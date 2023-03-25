@@ -1,6 +1,9 @@
 // get credential string from runtime arguments
-const nanoCreds = process.argv[2]
-const nanoURL = 'http://admin:' + nanoCreds + ':5984'
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).argv
+
+const nanoURL = 'http://admin:' + argv.dbpass + '@' + argv.dburl + ':5984'
 const nano = require('nano')(nanoURL)
 const { v4: uuidv4 } = require('uuid');
 
