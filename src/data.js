@@ -32,9 +32,9 @@ exports.createUser = (user) => {
     })
 }
 
-exports.deleteUser = (email) => {
+exports.deleteUser = (email, rev) => {
     return new Promise((resolve, reject) => {
-        users.destroy(email, { revs_info: true }, (err, body) => {
+        users.destroy(email, rev, (err, body) => {
             if (err) reject(err)
             else resolve(body)
         })
