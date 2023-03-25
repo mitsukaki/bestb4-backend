@@ -1,4 +1,4 @@
-const users = require('../../data.js')
+const data = require('../../data.js')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -19,18 +19,22 @@ exports.handler = (req, res) => {
     // hash the password
     bcrypt.hash(req.body.password, saltRounds).then((hash) => {
         // create the user
-        return users.createUser({
+        return data.createUser({
             _id: req.body.email,
             username: req.body.username,
             password: hash,
             fridges: []
         })
     }).then((user) => {
+        // sign the user in
+        return data.startSession(user);
+    }).then((user) => {
         // return the user data
         res.status(200).json({
             email: user._id,
             username: user.username,
-            fridges: user.fridges
+            fridges: user.fridges,
+            token: user.token
         })
     }).catch((err) => {
         // alias the error for a duplicate database entry

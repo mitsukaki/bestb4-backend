@@ -24,7 +24,10 @@ exports.createUser = (user) => {
         // TODO: ensure user is a valid user object
         users.insert(user, (err, body) => {
             if (err) reject(err)
-            else resolve(user)
+            else {
+                user._rev = body.rev
+                resolve(user)
+            }
         })
     })
 }
@@ -37,7 +40,10 @@ exports.startSession = (user) => {
     return new Promise((resolve, reject) => {
         users.insert(user, (err, body) => {
             if (err) reject(err)
-            else resolve(user)
+            else {
+                user._rev = body.rev
+                resolve(user)
+            }
         })
     })
 }
