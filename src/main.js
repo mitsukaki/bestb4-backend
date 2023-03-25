@@ -5,10 +5,13 @@ const https = require('https');
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
 
 // util
 const data = require('./data.js')
 const app = express()
+const argv = yargs(hideBin(process.argv)).argv
 
 // endpoints
 const auth = require('./endpoints/auth.js')
@@ -58,16 +61,12 @@ app.get('/', (req, res) => {
     res.send('API online')
 })
 
-app.listen(port, () => {
-    console.log(`BestBefore backend alive on port ${port}`)
-})
-
 let server;
 if (argv.devmode) server = http.createServer(app); 
 else server = https.createServer(credentials, app);
 
 let port = argv.devmode ? 80 : 443;
-httpsServer.listen(port, () => {
+server.listen(port, () => {
     if (argv.devmode) console.log('[WARN] Running in devmode!');
-    console.log('BestBefore Server running on port' + port);
+    console.log('BestBefore Server running on port ' + port);
 });
