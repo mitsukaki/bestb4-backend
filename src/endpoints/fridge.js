@@ -18,6 +18,19 @@ exports.createFridgeHandle = (req, res) => {
     });
 }
 
+exports.deleteFridgeHandle = (req, res) => {
+    data.getFridgeById(req.params.fridge_id).then((fridge) => {
+        return data.deleteFridge(fridge._id, fridge._rev)
+    }).then((fridge) => {
+        res.status(200).json({})
+    }).catch((err) => {
+        // send the error
+        res.status(err.statusCode).json({
+            message: err.reason
+        })
+    })
+}
+
 // GET /fridge/:fridge_id/items/
 exports.getFridgeItemsHandle = (req, res) => {
     data.getFridgeById(req.params.fridge_id).then((fridge) => {

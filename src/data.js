@@ -76,6 +76,15 @@ exports.createFridge = () => {
     })
 }
 
+exports.deleteFridge = (_id, rev) => {
+    return new Promise((resolve, reject) => {
+        fridges.destroy(_id, rev, (err, body) => {
+            if (err) reject(err)
+            else resolve(body)
+        })
+    })
+}
+
 exports.getFridgeById = (id) => {
     return new Promise((resolve, reject) => {
         fridges.get(id, { revs_info: true }, (err, body) => {
