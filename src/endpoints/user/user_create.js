@@ -17,14 +17,16 @@ exports.handler = (req, res) => {
     }
 
     // hash the password
+    let bhash;
     bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+        bhash = hash;
         return data.createFridge();
     }).then((fridge) => {
         // create the user
         return data.createUser({
             _id: req.body.email,
             username: req.body.username,
-            password: hash,
+            password: bhash,
             fridges: [fridge._id]
         })
     }).then((user) => {

@@ -39,14 +39,10 @@ exports.getFridgeItemsHandle = (req, res) => {
     })
 }
 
-// PUT /fridge/:fridge_id/items/
-exports.updateFridgeItemsHandle = (req, res) => {
-    
-}
-
 // DELETE /fridge/:fridge_id/items/
 exports.removeFridgeItemsHandle = (req, res) => {
-    // TODO: delete fridge items
+    // get the array of items to delete
+    const items = req.body
 }
 
 // DELETE /fridge/:fridge_id/

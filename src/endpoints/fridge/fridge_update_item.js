@@ -20,28 +20,23 @@ exports.handler = (req, res) => {
     }
 
     // get the fridge from the database
-    data.getFridgeById(req.params._id).then((fridge) => {
-        // update the items
-        fridge.items = req.body;
-
-        // save the fridge
-        return data.updateFridge(fridge);
-    }).then((fridge) => {
+    data.getFridgeById(req.params.fridge_id).then((fridge) => {
         // iterate all items in the request body
-        req.body.items.forEach((item) => {
+        req.body.forEach((item) => {
             // if the item doesn't exist, create it
             if (!fridge.items.hasOwnProperty(item._id)) {
                 fridge.items[item._id] = {
+                    _id: item._id,
                     name: item.name,
                     expiry: item.expiry,
                     quantity: item.quantity
                 }
+            } else {
+                // patch the items
+                patchIfSet(item, fridge.items[item._id], "name");
+                patchIfSet(item, fridge.items[item._id], "expiry");
+                patchIfSet(item, fridge.items[item._id], "quantity");
             }
-            
-            // patch the items
-            patchIfExists(item, fridge.items[item._id], "name");
-            patchIfExists(item, fridge.items[item._id], "expiry");
-            patchIfExists(item, fridge.items[item._id], "quantity");
         })
 
         return data.updateFridge(fridge);
@@ -58,13 +53,14 @@ exports.handler = (req, res) => {
         }
 
         // send the error
+        console.log(err)
         res.status(err.statusCode).json({
             message: err.reason
         })
     })
 }
 
-function patchIfExists(sourceObj, targetObj, key) {
+function patchIfSet(sourceObj, targetObj, key) {
     if (sourceObj.hasOwnProperty(key))
         targetObj[key] = sourceObj[key];
 }

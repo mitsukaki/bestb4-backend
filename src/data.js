@@ -76,7 +76,7 @@ exports.getFridgeById = (id) => {
     })
 }
 
-exports.updateFridgeItem = (fridge) => {
+exports.updateFridge = (fridge) => {
     // upload the new fridge
     return new Promise((resolve, reject) => {
         fridges.insert(fridge, (err, body) => {
