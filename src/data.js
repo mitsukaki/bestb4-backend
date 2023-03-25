@@ -33,8 +33,6 @@ exports.startSession = (user) => {
     // create a session token
     user.token = uuidv4()
 
-    console.log(user)
-
     // update the user
     return new Promise((resolve, reject) => {
         users.insert(user, (err, body) => {
