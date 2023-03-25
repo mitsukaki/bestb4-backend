@@ -1,4 +1,4 @@
-const users = require('../data.js')
+const data = require('../data.js')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -17,21 +17,26 @@ exports.loginHandle = (req, res) => {
     }
 
     // fetch the user
-    users.getUserByEmail(req.body.email).then((user) => {
+    let userData;
+    data.getUserByEmail(req.body.email).then((user) => {
+        userData = user;
         // check if the password is correct
         return bcrypt.compare(req.body.password, user.password)
     }).then((matches) => {
         if (matches)
-            // send the user data
-            res.status(200).json({
-                email: user._id,
-                username: user.username,
-                fridges: user.fridges
-            })
+            return data.startSession(userData);
         else throw {
             statusCode: 400,
             reason: 'Incorrect email/password.'
-        }
+        }        
+    }).then((user) => {
+        // send the user data
+        res.status(200).json({
+            email: user._id,
+            username: user.username,
+            fridges: user.fridges,
+            token: user.token
+        })
     }).catch((err) => {
         // alias the error for a missing database entry
         if (err.reason == "missing") {
