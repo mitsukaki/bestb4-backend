@@ -52,7 +52,8 @@ exports.createFridge = () => {
     // create a fridge object
     let fridge = {
         _id: uuidv4(),
-        items: []
+        user_ids: [],
+        items: {}
     }
 
     return new Promise((resolve, reject) => {
