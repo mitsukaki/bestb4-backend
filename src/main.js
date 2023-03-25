@@ -2,6 +2,7 @@
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const multer = require('multer')    
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -10,6 +11,7 @@ const { hideBin } = require('yargs/helpers')
 
 // util
 const data = require('./data.js')
+const upload = multer({ dest: 'uploads/' })
 const app = express()
 const argv = yargs(hideBin(process.argv)).argv
 
@@ -55,6 +57,12 @@ app.get('/fridge/:fridge_id/items/', fridge.getFridgeItemsHandle)
 app.put('/fridge/:fridge_id/items/', fridge.addFridgeItemsHandle)
 app.delete('/fridge/:fridge_id/items/', fridge.removeFridgeItemsHandle)
 app.delete('/fridge/:fridge_id/', fridge.removeFridgeHandle)
+
+// Receipt OCR endpoints
+app.post('/receipt', upload.single('scan'), (req, res, next) => {
+    // req.file is the `scan` file
+    // req.body will hold the text fields, if there were any
+})
 
 // ping
 app.get('/', (req, res) => {
