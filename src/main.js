@@ -20,6 +20,7 @@ const auth = require('./endpoints/auth.js')
 const user = require('./endpoints/user.js')
 const user_create = require('./endpoints/user/user_create.js')
 const fridge = require('./endpoints/fridge.js')
+const fridge_update_item = require('./endpoints/fridge/fridge_update_item.js')
 
 // Load SSL data if not devmode
 let credentials;
@@ -54,7 +55,7 @@ app.delete('/user/:user_id/', user.deleteUserHandle) // DELETE /user/:user_id/
 // fridge endpoints
 app.post('/fridge/', fridge.createFridgeHandle)
 app.get('/fridge/:fridge_id/items/', fridge.getFridgeItemsHandle)
-app.put('/fridge/:fridge_id/items/', fridge.addFridgeItemsHandle)
+app.put('/fridge/:fridge_id/items/', fridge_update_item.handler)
 app.delete('/fridge/:fridge_id/items/', fridge.removeFridgeItemsHandle)
 app.delete('/fridge/:fridge_id/', fridge.removeFridgeHandle)
 
