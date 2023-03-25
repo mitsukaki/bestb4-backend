@@ -1,3 +1,5 @@
+const data = require('../data.js')
+
 // POST /fridge/
 exports.createFridgeHandle = (req, res) => {
     // TODO: create fridge
@@ -5,7 +7,26 @@ exports.createFridgeHandle = (req, res) => {
 
 // GET /fridge/:fridge_id/items/
 exports.getFridgeItemsHandle = (req, res) => {
-    // TODO: list fridge items
+    data.getFridgeById(req.params.fridge_id).then((fridge) => {
+        let items = [];
+
+        // convert items to an array
+        fridge.items.forEach((item) => items.push)
+
+        // send back the items
+        res.status(200).json(items)
+    }).catch((err) => {
+        // alias the error for a missing database entry
+        if (err.reason == "missing") {
+            err.statusCode = 400
+            err.reason = "Fridge not found."
+        }
+
+        // send the error
+        res.status(err.statusCode).json({
+            message: err.reason
+        })
+    })
 }
 
 // PUT /fridge/:fridge_id/items/
