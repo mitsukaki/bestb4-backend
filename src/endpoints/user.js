@@ -30,4 +30,18 @@ exports.updateUserHandle = (req, res) => {
 // DELETE /user/:user_id/
 exports.deleteUserHandle = (req, res) => {
     // TODO: delete user
+            deleteUser().then((User) => {
+            res.status(200).json(user)
+        }).catch((err) => {
+             
+            // send the error
+            res.status(err.statusCode).json({
+                message: err.reason
+        })
+       
+        })
+
 }
+       
+       
+     

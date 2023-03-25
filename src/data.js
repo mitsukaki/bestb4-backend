@@ -32,6 +32,15 @@ exports.createUser = (user) => {
     })
 }
 
+exports.deleteUser = (email) => {
+    return new Promise((resolve, reject) => {
+        users.destroy(email, { revs_info: true }, (err, body) => {
+            if (err) reject(err)
+            else resolve(body)
+        })
+    })
+}
+
 exports.startSession = (user) => {
     // create a session token
     user.token = uuidv4()
