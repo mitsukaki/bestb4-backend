@@ -54,14 +54,19 @@ exports.getFridgeItemsHandle = (req, res) => {
 
 // DELETE /fridge/:fridge_id/items/
 exports.removeFridgeItemsHandle = (req, res) => {
-    // RETURN: the updated list
-
-
     // get the array of items to delete
     data.getFridgeById(req.params.fridge_id).then((fridge) => {
         req.body.forEach((item) => {
-            
+            delete fridge.items[item]
         });
+
+        // update the fridge
+        return data.updateFridge(fridge)
+    }).then((fridge) => {
+        // return the updated list
+        res.status(200).json(
+            data.getFridgeItemArray(fridge)
+        )
     }).catch((err) => {
         // alias the error for a missing database entry
         if (err.reason == "missing") {
