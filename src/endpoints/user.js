@@ -1,8 +1,3 @@
-// POST /user/
-exports.createUserHandle = (req, res) => {
-    // TODO: create user
-}
-
 // GET /user/:user_id/
 exports.getUserHandle = (req, res) => {
     res.send(req.params)

@@ -1,20 +1,31 @@
 const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 
+const data = require('./data.js')
+
 const auth = require('./endpoints/auth.js')
 const user = require('./endpoints/user.js')
+const user_create = require('./endpoints/user/user_create.js')
 const fridge = require('./endpoints/fridge.js')
+
+// parse the request body with JSON
+app.use(bodyParser.json())
+
+// enable CORS
+app.use(cors())
 
 // auth endpoints
 app.post('/auth/', auth.loginHandle)
 app.delete('/auth/', auth.logoutHandle)
 
 // user endpoints
-app.post('/user/', user.createUserHandle)
-app.get('/user/:user_id/', user.getUserHandle)
-app.put('/user/:user_id/', user.updateUserHandle)
-app.delete('/user/:user_id/', user.deleteUserHandle)
+app.post('/user/', user_create.handler) // POST /user/
+app.get('/user/:user_id/', user.getUserHandle) // GET /user/:user_id/
+app.put('/user/:user_id/', user.updateUserHandle) // PUT /user/:user_id/
+app.delete('/user/:user_id/', user.deleteUserHandle) // DELETE /user/:user_id/
 
 // fridge endpoints
 app.post('/fridge/', fridge.createFridgeHandle)
