@@ -41,8 +41,27 @@ exports.getFridgeItemsHandle = (req, res) => {
 
 // DELETE /fridge/:fridge_id/items/
 exports.removeFridgeItemsHandle = (req, res) => {
+    // RETURN: the updated list
+
+
     // get the array of items to delete
-    const items = req.body
+    data.getFridgeById(req.params.fridge_id).then((fridge) => {
+        req.body.forEach((item) => {
+            
+        });
+    }).catch((err) => {
+        // alias the error for a missing database entry
+        if (err.reason == "missing") {
+            err.statusCode = 400
+            err.reason = "Fridge not found."
+        }
+
+        // send the error
+        res.status(err.statusCode).json({
+            message: err.reason
+        })
+    })
+    
 }
 
 // DELETE /fridge/:fridge_id/
