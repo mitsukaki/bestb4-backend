@@ -21,6 +21,7 @@ const user = require('./endpoints/user.js')
 const user_create = require('./endpoints/user/user_create.js')
 const fridge = require('./endpoints/fridge.js')
 const fridge_update_item = require('./endpoints/fridge/fridge_update_item.js')
+const receipt = require('./endpoints/receipt.js')
 
 // Load SSL data if not devmode
 let credentials;
@@ -60,10 +61,7 @@ app.delete('/fridge/:fridge_id/items/', fridge.removeFridgeItemsHandle)
 app.delete('/fridge/:fridge_id/', fridge.removeFridgeHandle)
 
 // Receipt OCR endpoints
-app.post('/receipt', upload.single('scan'), (req, res, next) => {
-    // req.file is the `scan` file
-    // req.body will hold the text fields, if there were any
-})
+app.post('/receipt', upload.single('scan'), receipt.handler)
 
 // ping
 app.get('/', (req, res) => {
