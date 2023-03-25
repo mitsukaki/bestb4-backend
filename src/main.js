@@ -58,7 +58,7 @@ app.post('/fridge/', fridge.createFridgeHandle)
 app.get('/fridge/:fridge_id/items/', fridge.getFridgeItemsHandle)
 app.put('/fridge/:fridge_id/items/', fridge_update_item.handler)
 app.delete('/fridge/:fridge_id/items/', fridge.removeFridgeItemsHandle)
-app.delete('/fridge/:fridge_id/', fridge.removeFridgeHandle)
+app.delete('/fridge/:fridge_id/', fridge.deleteFridgeHandle)
 
 // Receipt OCR endpoints
 app.post('/receipt', upload.single('scan'), receipt.handler)

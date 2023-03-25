@@ -18,6 +18,7 @@ exports.createFridgeHandle = (req, res) => {
     });
 }
 
+// DELETE /fridge/:fridge_id/
 exports.deleteFridgeHandle = (req, res) => {
     data.getFridgeById(req.params.fridge_id).then((fridge) => {
         return data.deleteFridge(fridge._id, fridge._rev)
@@ -80,9 +81,4 @@ exports.removeFridgeItemsHandle = (req, res) => {
         })
     })
     
-}
-
-// DELETE /fridge/:fridge_id/
-exports.removeFridgeHandle = (req, res) => {
-    // TODO: delete fridge
 }
