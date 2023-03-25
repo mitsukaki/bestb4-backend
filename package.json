@@ -1,0 +1,23 @@
+{
+  "name": "bestb4-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitsukaki/bestb4-backend.git"
+  },
+  "author": "bestb4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mitsukaki/bestb4-backend/issues"
+  },
+  "homepage": "https://github.com/mitsukaki/bestb4-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
