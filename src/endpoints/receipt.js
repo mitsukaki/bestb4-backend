@@ -38,8 +38,8 @@ exports.handler = (req, res, next) => {
             }
         }
 
-        // return the items
-        res.status(200).json(items)
+        // convert the items to an array and send it
+        res.status(200).json(Object.values(items))
     })
     .catch((err) => {
         // send the error
